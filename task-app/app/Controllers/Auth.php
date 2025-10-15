@@ -24,6 +24,23 @@ class Auth extends BaseController
         return view('auth/forgot-pwd');
     }
 
+    public function resetPwdView($token)
+    {
+        if (session()->get('isLoggedIn')) return redirect()->to('/dashboard');
+
+        $userModel = new UserModel();
+        $user = $userModel->where('reset_token', $token)->first();
+        if (! $user || strtotime($user['reset_expires']) < time()) {
+            session()->setFlashdata('alert', [
+                'type' => 'danger',
+                'message' => lang('ResetPwd.invalidToken')
+            ]);
+            return redirect()->to('/forgot-password')->with('error', 'Invalid token');
+        }
+
+        return view('auth/reset-pwd', ['token' => $token]);
+    }
+
     public function signIn()
     {
         $email = $this->request->getPost('email');
@@ -229,23 +246,6 @@ class Auth extends BaseController
             'message' => lang("ResetPwdEmail.successSend")
         ]);
         return redirect()->to('/forgot-password')->with('success', 'Email sent');
-    }
-
-    public function resetPwdView($token)
-    {
-        if (session()->get('isLoggedIn')) return redirect()->to('/dashboard');
-
-        $userModel = new UserModel();
-        $user = $userModel->where('reset_token', $token)->first();
-        if (! $user || strtotime($user['reset_expires']) < time()) {
-            session()->setFlashdata('alert', [
-                'type' => 'danger',
-                'message' => lang('ResetPwd.invalidToken')
-            ]);
-            return redirect()->to('/forgot-password')->with('error', 'Invalid token');
-        }
-
-        return view('auth/reset-pwd', ['token' => $token]);
     }
 
     public function resetPassword($token)
