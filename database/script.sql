@@ -1,0 +1,19 @@
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS `task-app`;
+USE `task-app`;
+
+-- Tabla Usuario
+CREATE TABLE User (
+    id_user INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    administrator BOOLEAN DEFAULT FALSE,
+    profile_image VARCHAR(512) DEFAULT NULL,
+    token VARCHAR(64) DEFAULT NULL UNIQUE,
+    reset_token VARCHAR(64) DEFAULT NULL UNIQUE,
+    reset_expires DATETIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

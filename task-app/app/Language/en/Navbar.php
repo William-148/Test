@@ -1,0 +1,7 @@
+<?php
+
+return [
+  "home" => "Home",
+  "signIn" => "Sign In",
+  "signUp" => "Sign Up",
+];

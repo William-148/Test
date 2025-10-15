@@ -1,0 +1,41 @@
+FROM php:8.2-apache
+
+# Habilitar mod_rewrite
+RUN a2enmod rewrite
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libicu-dev \
+    && docker-php-ext-install \
+    mysqli \
+    pdo_mysql \
+    zip \
+    gd \
+    mbstring \
+    intl
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Crear usuario 'developer' con tu UID 1000
+RUN useradd -m -u 1000 -s /bin/bash developer
+RUN usermod -aG www-data developer
+
+# Crear y dar permisos al directorio cache de Composer
+RUN mkdir -p /var/www/.composer
+RUN chown -R developer:developer /var/www/.composer
+
+# Configurar permisos
+RUN chown -R developer:www-data /var/www/html
+RUN chmod -R 775 /var/www/html
+
+WORKDIR /var/www/html
+
+USER developer
+
+EXPOSE 80

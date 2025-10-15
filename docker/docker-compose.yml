@@ -1,0 +1,23 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: server
+    volumes:
+      - ../task-app:/var/www/html
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
+    user: "1000:1000"
+    ports:
+      - "8080:80"
+
+  db:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: task-app
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
