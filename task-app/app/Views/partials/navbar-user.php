@@ -19,11 +19,11 @@
         </li>
         <?php if (session()->get('isLoggedIn') && session()->get('administrator')): ?>
           <li class="nav-item">
-            <a class="nav-link" href="/sign-in"><?= lang("NavbarUser.users") ?></a>
+            <a class="nav-link" href="/users"><?= lang("NavbarUser.users") ?></a>
           </li>
         <?php endif; ?>
         <li class="nav-item">
-          <a class="nav-link" href="/sign-in"><?= lang("NavbarUser.tasks") ?></a>
+          <a class="nav-link" href="/tasks"><?= lang("NavbarUser.tasks") ?></a>
         </li>
         <li class="nav-item">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutModal">

@@ -87,80 +87,24 @@ class Auth extends BaseController
 
     }
 
-    private function sendActiveUserEmail($user) {
-        $email = \Config\Services::email();
-        $email->setTo($user['email']);
-        $email->setSubject(lang("ActivateEmail.subject"));
-        $email->setMessage(view('emails/activation', [
-            'name' => $user['name'],
-            'activationLink' => base_url('activate/' . $user['token'])
-        ]));
-
-        if (! $email->send()) {
-            log_message('error', 'Error sending email: ' . $email->printDebugger(['headers']));
-            session()->setFlashdata('alert', [
-              'type' => 'danger',
-              'message' => $email->printDebugger(['headers'])
-            ]);
-        }
-    }
-
     public function signUp()
     {
-        // Validation
-        $validation = \Config\Services::validation();
-        $rules = [
-            'name' => 'required|min_length[3]|max_length[150]',
-            'email' => 'required|valid_email',
-            'password' => 'required|min_length[6]'
-        ];
+        $service = new \App\Services\UserService();
+        $result = $service->register($this->request->getPost());
 
-        if (! $this->validate($rules)) {
+        if (! $result['success']) {
             session()->setFlashdata('alert', [
                 'type' => 'danger',
-                'message' => 'Validation error. Please check the form fields.'
+                'message' => $result['errors']
             ]);
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            return redirect()->back()->withInput()->with('errors', $result['errors']);
         }
 
-        // Saving user
-        try {
-            $userModel = new UserModel();
-            $data = [
-                'name'         => $this->request->getPost('name'),
-                'email'        => $this->request->getPost('email'),
-                'password'     => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                'active'       => false,
-                'administrator'=> false,
-                'token'        => bin2hex(random_bytes(32)),
-                'profile_image'=> null
-            ];
-            $userModel->insert($data);
-
-            // Send activation email
-            $this->sendActiveUserEmail($data);
-            // Notify success
-            session()->setFlashdata('alert', [
-                'type' => 'success',
-                'message' => lang('SignUp.success')
-            ]);
-            return redirect()->to('/sign-in');
-        } catch (\Throwable $e) {
-            $message = $e->getMessage();
-            if (str_contains($message, 'Duplicate entry')) {
-                session()->setFlashdata('alert', [
-                    'type' => 'danger',
-                    'message' => lang("SignUp.duplicateEmail")
-                ]);
-            } else {
-                session()->setFlashdata('alert', [
-                    'type' => 'danger',
-                    'message' => lang("System.unexpectedError") . $message
-                ]);
-            }
-
-            return redirect()->back()->withInput();
-        }
+        session()->setFlashdata('alert', [
+            'type' => 'success',
+            'message' => lang('SignUp.success')
+        ]);
+        return redirect()->to('/sign-in');
     }
 
     public function activateAccount($token)
