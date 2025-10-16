@@ -15,7 +15,7 @@
 
   <script>
     const toastEl = document.getElementById('toastLogout');
-    const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+    const toast = new bootstrap.Toast(toastEl, { delay: 7000 });
     toast.show();
   </script>
 <?php endif; ?>
@@ -35,7 +35,7 @@
 
   <script>
     const toastEl = document.getElementById('appToast');
-    const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+    const toast = new bootstrap.Toast(toastEl, { delay: 8000 });
     toast.show();
   </script>
 <?php endif; ?>

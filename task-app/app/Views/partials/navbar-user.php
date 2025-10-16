@@ -15,7 +15,7 @@
           </li>
         <?php endif; ?>
         <li class="nav-item">
-          <a class="nav-link" href="/sign-in"><?= lang("NavbarUser.profile") ?></a>
+          <a class="nav-link" href="/profile"><?= lang("NavbarUser.profile") ?></a>
         </li>
         <?php if (session()->get('isLoggedIn') && session()->get('administrator')): ?>
           <li class="nav-item">

@@ -1,7 +1,6 @@
-<?= view('partials/header') ?>
+<?= $this->extend('layouts/main') ?>
+<?= $this->section('content') ?>
 
-<?= view('partials/navbar-user') ?>
-<main class="container py-5">
   <div class="row align-items-center">
     <div class="col-lg-7 mb-4 mb-lg-0">
       <h1 class="display-5 fw-bold text-success">¡Hola Usuario!</h1>
@@ -17,6 +16,6 @@
       <img src="https://cdn-icons-png.flaticon.com/512/7792/7792148.png" alt="Tareas" class="img-fluid" style="max-height: 280px;">
     </div>
   </div>
-</main>
 
-<?= view('partials/footer-scripts') ?>
+<?= $this->endSection() ?>
+

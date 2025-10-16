@@ -23,4 +23,11 @@ $routes->post('/reset-password/(:segment)', 'Auth::resetPassword/$1');
 // Private routes *********************************************
 $routes->group('', ['filter' => 'auth'], function($routes) {
   $routes->get('/dashboard', 'Dashboard::index');
+  $routes->get('/profile', 'User::profileView');
+  $routes->get('/profile/edit', 'User::editProfileView');
+  $routes->post('/profile/edit', 'User::updateProfile');
+  $routes->get('/profile/change-password', 'User::changePasswordView');
+  $routes->post('/profile/change-password', 'User::changePassword');
+
+
 });
