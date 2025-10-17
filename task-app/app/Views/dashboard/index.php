@@ -1,21 +1,32 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
-  <div class="row align-items-center">
-    <div class="col-lg-7 mb-4 mb-lg-0">
-      <h1 class="display-5 fw-bold text-success">¡Hola Usuario!</h1>
-      <p class="lead mt-3">Bienvenido de nuevo a <strong>TaskApp</strong>. Aquí puedes gestionar tus tareas, revisar tu progreso y mantenerte organizado.</p>
-      <ul class="list-group list-group-flush mt-4">
-        <li class="list-group-item">📝 Crear nuevas tareas</li>
-        <li class="list-group-item">📋 Ver tus tareas pendientes</li>
-        <li class="list-group-item">✅ Marcar tareas como completadas</li>
-        <li class="list-group-item">📊 Ver estadísticas de productividad</li>
-      </ul>
-    </div>
-    <div class="col-lg-5 text-center">
-      <img src="https://cdn-icons-png.flaticon.com/512/7792/7792148.png" alt="Tareas" class="img-fluid" style="max-height: 280px;">
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="row g-0 align-items-center">
+          <div class="col-md-7 p-4">
+            <h1 class="fw-bold text-success"><?= lang('Dashboard.greetingTitle') ?></h1>
+            <p class="lead mt-3"><?= lang('Dashboard.welcomeMessage') ?></p>
+
+            <div class="mt-4">
+              <h5 class="mb-3"><?= lang('Dashboard.featuresTitle') ?></h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><?= lang('Dashboard.featureCreate') ?></li>
+                <li class="list-group-item"><?= lang('Dashboard.featureView') ?></li>
+                <li class="list-group-item"><?= lang('Dashboard.featureComplete') ?></li>
+                <li class="list-group-item"><?= lang('Dashboard.featureStats') ?></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5 text-center p-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/7792/7792148.png" alt="Tareas" class="img-fluid" style="max-height: 240px;">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
 <?= $this->endSection() ?>
-

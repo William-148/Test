@@ -8,22 +8,25 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarRight">
+      <?php $segment = service('uri')->getSegment(1); ?>
       <ul class="navbar-nav">
         <?php if (session()->get('isLoggedIn')): ?>
-          <li class="nav-item">
-            <span class="nav-link"><?= lang("NavbarUser.welcome") ?>, <?= esc(session()->get('name')) ?></span>
+          <li class="nav-item d-flex align-items-center">
+            <span class="px-2 fw-semibold text-dark" >
+              <?= lang("NavbarUser.welcome") ?>, <?= esc(session()->get('name')) ?>
+            </span>
           </li>
         <?php endif; ?>
         <li class="nav-item">
-          <a class="nav-link" href="/profile"><?= lang("NavbarUser.profile") ?></a>
+          <a class="nav-link <?= $segment === 'profile' ? 'active fw-bold text-primary' : '' ?>" href="/profile"><?= lang("NavbarUser.profile") ?></a>
         </li>
         <?php if (session()->get('isLoggedIn') && session()->get('administrator')): ?>
           <li class="nav-item">
-            <a class="nav-link" href="/users"><?= lang("NavbarUser.users") ?></a>
+            <a class="nav-link <?= $segment === 'users' ? 'active fw-bold text-primary' : '' ?>" href="/users"><?= lang("NavbarUser.users") ?></a>
           </li>
         <?php endif; ?>
         <li class="nav-item">
-          <a class="nav-link" href="/tasks"><?= lang("NavbarUser.tasks") ?></a>
+          <a class="nav-link <?= $segment === 'tasks' ? 'active fw-bold text-primary' : '' ?>" href="/tasks"><?= lang("NavbarUser.tasks") ?></a>
         </li>
         <li class="nav-item">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutModal">

@@ -56,7 +56,7 @@ class User extends BaseController
           'type' => 'danger',
           'message' => 'User not found.'
       ]);
-      return redirect()->back();
+      return redirect()->to('/users')->with('error', 'User not found');
     }
 
     try {

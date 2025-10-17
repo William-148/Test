@@ -75,6 +75,7 @@ class Auth extends BaseController
         ]);
         if ($remember) {
           $token = bin2hex(random_bytes(32));
+          // Create token cookie valid for 30 days
           setcookie('remember_token', $token, time() + (86400 * 30), "/");
 
           $userModel->update($user['id_user'], ['token' => $token]);

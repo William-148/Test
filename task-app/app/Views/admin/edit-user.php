@@ -37,7 +37,6 @@
           <?= isset($user) ? '' : 'required' ?>>
       </div>
 
-      <!-- ✅ Nuevos checkbox -->
       <div class="form-check mb-2">
         <input class="form-check-input" type="checkbox" name="active" id="active"
           <?= old('active', $user['active'] ?? false) ? 'checked' : '' ?>>
