@@ -132,4 +132,94 @@ class UserProfile extends BaseController
     return redirect()->to('/profile')->with('success', 'Updated successfully.');
   }
 
+  public function uploadImage($id)
+  {
+    $userModel = new UserModel();
+    $user = $userModel->find($id);
+
+    if (!$user) {
+      return redirect()->back()->with('error', 'User not found.');
+    }
+    
+    // Getting file from form
+    $file = $this->request->getFile('profile_image');
+
+    if (!$file || !$file->isValid()) {
+      session()->setFlashdata('alert', [
+        'type' => 'danger',
+        'message' => lang("Profile.invalidFile")
+      ]);
+      return redirect()->back()->with('error', lang('Profile.invalidFile'));
+    }
+
+    // Validate type and size
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!in_array($file->getMimeType(), $allowedTypes)) {
+       session()->setFlashdata('alert', [
+        'type' => 'danger',
+        'message' => lang("Profile.invalidType")
+      ]);
+
+      return redirect()->back()->with('error', lang('Profile.invalidType'));
+    }
+
+    if ($file->getSize() > 2 * 1024 * 1024) { // 2MB
+      session()->setFlashdata('alert', [
+        'type' => 'danger',
+        'message' => lang("Profile.tooLarge")
+      ]);
+      return redirect()->back()->with('error', lang('Profile.tooLarge'));
+    }
+
+    // Delete old image if exists
+    if (!empty($user['profile_image'])) {
+        $oldPath = FCPATH . 'uploads/profiles/' . $user['profile_image'];
+        if (is_file($oldPath)) {
+            unlink($oldPath);
+        }
+    }
+
+    // Save new image with random name
+    $newName = $file->getRandomName();
+    $file->move(FCPATH . 'uploads/profiles', $newName);
+
+    // Update user image in database
+    $userModel->update($id, ['profile_image' => $newName]);
+
+    session()->setFlashdata('alert', [
+      'type' => 'success',
+      'message' => lang("Profile.imageUpdated")
+    ]);
+    return redirect()->back()->with('success', lang('Profile.imageUpdated'));
+  }
+
+  public function deleteImage($id)
+  {
+    $userModel = new UserModel();
+    $user = $userModel->find($id);
+
+    if (!$user || empty($user['profile_image'])) {
+      session()->setFlashdata('alert', [
+        'type' => 'danger',
+        'message' => lang("Profile.invalidFile")
+      ]);
+      return redirect()->back()->with('error', lang('Profile.invalidFile'));
+    }
+  
+    // Delete image file
+    $imagePath = FCPATH . 'uploads/profiles/' . $user['profile_image'];
+    if (is_file($imagePath)) {
+      unlink($imagePath);
+    }
+
+    // Remove image reference from database
+    $userModel->update($id, ['profile_image' => null]);
+
+    session()->setFlashdata('alert', [
+      'type' => 'success',
+      'message' => lang("Profile.imageDeleted")
+    ]);
+    return redirect()->back()->with('success', lang('Profile.imageDeleted'));
+  }
+
 }

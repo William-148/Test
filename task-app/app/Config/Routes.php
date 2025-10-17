@@ -29,6 +29,8 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
   $routes->post('/profile/edit', 'UserProfile::updateProfile');
   $routes->get('/profile/change-password', 'UserProfile::changePasswordView');
   $routes->post('/profile/change-password', 'UserProfile::changePassword');
+  $routes->post('/profile/upload-image/(:num)', 'UserProfile::uploadImage/$1');
+  $routes->post('profile/delete-image/(:num)', 'UserProfile::deleteImage/$1');
 
   $routes->get('/tasks', 'Task::tasksView');
   $routes->get('/tasks/new', 'Task::taskFormView');
