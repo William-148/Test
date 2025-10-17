@@ -162,3 +162,6 @@ mail.SMTPPort = 587 # Puerto SMTP de Gmail. No cambiar.
 mail.mailType = 'html' # No cambiar.
 
 ```
+
+### Iniciar Aplicación
+La aplicación ya está configurada. Para acceder, ingresar desde el navagador a `http://localhost/`, `http://[IP del host]/` o `http://[Mi dominio]/`. Apache por defecto está en el puerto 80 (por defecto no se coloca en las rutas), si se cambió, agregarlo a las rutas.
